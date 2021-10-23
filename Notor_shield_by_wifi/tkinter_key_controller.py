@@ -1,17 +1,27 @@
-try:                        # In order to be able to import tkinter for
-    import tkinter as tk    # either in python 2 or in python 3
+try:
+    import tkinter as tk
 except ImportError:
     import Tkinter as tk
 
 import requests
 from time import sleep
 
-link = "http://192.168.0.102/"
+link = "http://192.168.0.103"
 
 def event_handle(event):
     # Replace the window's title with event.type: input key
+    if event.keysym == 'w':
+        motor = "front_AB"
+    elif event.keysym == "s":
+        motor = "back_AB"
+    elif event.keysym == "a":
+        motor = "front_A"
+    elif event.keysym == "d":
+        motor = "front_B"
+
+
     try:
-        requests.get(f"{link}OPEN_LED")
+        requests.get(f"{link}/{motor}")
     except:
         pass
 
@@ -20,7 +30,8 @@ def event_handle(event):
 
 def event_commom(event):
     try:
-        requests.get(f"{link}CLOSE_LED")
+        requests.get(f"{link}/CLOSE")
+        requests.get(f"{link}/CLOSE")
     except:
         pass
 
