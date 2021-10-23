@@ -16,7 +16,7 @@ void loop()
   //Gira os motores no sentido horario
   //Aciona motor 1
   analogWrite(5, 1024); 
-  digitalWrite(0, HIGH); 
+  digitalWrite(0, HIGH);  
   //Aciona motor 2
   analogWrite(4, 1024); 
   digitalWrite(2, HIGH); 
