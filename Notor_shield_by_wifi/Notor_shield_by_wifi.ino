@@ -4,6 +4,10 @@
 
 void setup()
 {
+  servo_vertical.attach(0);  // attaches the servo on pin 9 to the servo object
+  servo_horizontal.attach(2);  
+  servo_vertical.write(5.0);
+  servo_horizontal.write(5.0);
   Serial.begin(115200);
   start("FAMILIA LUZ", "a1s2d3f4"); // Wifi details connec toxnx
   pinMode(LED, OUTPUT);
@@ -20,10 +24,20 @@ void loop()
 {
   waitUntilNewReq(); //Waits until a new request from python come
 
-  if (getPath() == "/front_AB")
-  {
-    printf("ON A");
-    analogWrite(5, 1024);
+  float horizontal_move= (((String(url).substring(7,10)).toFloat())/9.9)*180;
+  float vertical_move= (((String(url).substring(11,14)).toFloat())/9.9)*180;
+  Serial.println(horizontal_move);
+  Serial.println(vertical_move);
+  
+
+  servo_vertical.write(horizontal_move);
+  
+  servo_horizontal.write(vertical_move);  
+  delay(50);
+
+  if(L_direction == "-"){
+    Serial.println("Frente");
+    analogWrite(5, L_power);
     digitalWrite(0, LOW);
     printf("ON B");
     analogWrite(4, 1024);
