@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 import time
 
-url='http://192.168.0.103/cam-hi.jpg'
+url='http://192.168.0.107/cam-hi.jpg'
 
 def avg_circles(circles, b):
     avg_x=0
@@ -155,7 +155,7 @@ while True:
         
     img, img2 = take_measure(threshold_img, threshold_ln, minLineLength, maxLineGap, diff1LowerBound, diff1UpperBound, diff2LowerBound, diff2UpperBound)
     cv2.imshow('test',img)
-    cv2.imshow('test2',img2)
+    # cv2.imshow('test2',img2)
 
     if ord('q')==cv2.waitKey(10):
         exit(0)
