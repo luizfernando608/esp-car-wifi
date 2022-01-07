@@ -13,7 +13,8 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
 #include <WiFiClient.h>
-
+#define buzzer_pin 12
+int last_digit;
 // PORT
 WiFiServer server(80);
 WiFiClient client;
@@ -34,6 +35,14 @@ void start(String ssid, String pass){
   Serial.println(ssid);
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
+  last_digit = String((String(WiFi.localIP()[3])[2])).toInt();
+  for(int i=0;i < last_digit; i++ ){
+    tone(buzzer_pin,1200);
+    delay(1500);
+    tone(buzzer_pin,0);
+    delay(1500);
+  }
+
 // Setting up mDNS responder
   if (!MDNS.begin("esp8266")) {
     Serial.println("Error setting up MDNS responder!");

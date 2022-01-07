@@ -1,7 +1,17 @@
 #include "ESP_MICRO.h"
-
+#include <Servo.h>
+#include <cstdlib>
 #define LED 16
 
+Servo servo_vertical;  // create servo object to control a servo
+Servo servo_horizontal;
+
+// The power of
+String url;
+float L_power;
+String L_direction;
+float R_power;
+String R_direction;
 void setup()
 {
   servo_vertical.attach(0);  // attaches the servo on pin 9 to the servo object
@@ -18,11 +28,22 @@ void setup()
   //Motor 2
   pinMode(4, OUTPUT); // saída B-
   pinMode(2, OUTPUT); // saída B+
+  
 }
 
 void loop()
 {
   waitUntilNewReq(); //Waits until a new request from python come
+  // Getting the request
+  url = getPath();
+  // format /+0/+0/0.0/0.0
+  // Varia de 0 a 9
+  // Getting the power of each wheel
+  L_power = ( float(String(url[2]).toInt())/9)*1024 ;
+  R_power = ( float(String(url[5]).toInt())/9)*1024 ;
+  // Getting the di
+  L_direction = String(url[1]);
+  R_direction = String(url[4]);
 
   float horizontal_move= (((String(url).substring(7,10)).toFloat())/9.9)*180;
   float vertical_move= (((String(url).substring(11,14)).toFloat())/9.9)*180;
@@ -39,42 +60,26 @@ void loop()
     Serial.println("Frente");
     analogWrite(5, L_power);
     digitalWrite(0, LOW);
-    printf("ON B");
-    analogWrite(4, 1024);
-    digitalWrite(2, HIGH);
   }
-  if (getPath() == "/front_B")
-  {
-    printf("ON B");
-    analogWrite(4, 1024);
-    digitalWrite(2, HIGH);
+  else if(L_direction == "+"){
+    Serial.println("re");
+    analogWrite(5, L_power); 
+   digitalWrite(0, HIGH); 
   }
-  
-  if (getPath() == "/front_A")
-  {
-    printf("ON A");
-    analogWrite(5, 1024);
-    digitalWrite(0, LOW);
+  if(R_direction == "-"){
+    Serial.println("Frente");
+    analogWrite(4, R_power);
+   digitalWrite(2, HIGH);
   }
-  if (getPath() == "/back_AB")
-  {
-    printf("BACK A_B");
-    // Aciona motor A
-    analogWrite(5, 1024); 
-    digitalWrite(0, HIGH); 
-    //Aciona motor B
-    analogWrite(4, 1024); 
-    digitalWrite(2, LOW); 
+  else if(R_direction == "+"){
+    Serial.println("re");
+    analogWrite(4, R_power); 
+   digitalWrite(2, LOW); 
   }
 
-  if (getPath() == "/CLOSE")
-  {
-    printf("OFF A");
-    analogWrite(5, 0);
-    digitalWrite(0, LOW);
-    
-    printf("OFF B");
-    analogWrite(4, 0);
-    digitalWrite(2, LOW);
-  }
+  
+  
+  
+
 }
+
