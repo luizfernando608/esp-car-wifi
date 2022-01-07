@@ -1,0 +1,10 @@
+#esp-img{
+    transform: rotate(90deg);
+    margin-left: auto;
+    margin-right: auto;
+    height: 100%;
+    
+    display: block;
+}
+body{justify-content: center;
+align-items: center;}
